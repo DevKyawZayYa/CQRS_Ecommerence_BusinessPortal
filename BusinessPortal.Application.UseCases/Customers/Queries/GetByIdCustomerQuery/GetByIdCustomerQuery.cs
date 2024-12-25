@@ -6,6 +6,6 @@ namespace BusinessPortal.Application.UseCases.Customers.Queries.GetByIdCustomerQ
 {
     public class GetByIdCustomerQuery : IRequest<BaseResponse<CustomerDto>>
     {
-        public string? CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
     }
 }

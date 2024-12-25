@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using BusinessPortal.Persistence.Contexts;
 using BusinessPortal.Infrastructure;
+using BusinessPortal.Persistence.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add persistence layer dependencies
-builder.Services.AddInfrastructureServices();
-
 builder.Services.AddSingleton<DapperContext>();
+
+// Register repositories
+builder.Services.ConfigureRepositories();
 
 // Register MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerHandler).Assembly));

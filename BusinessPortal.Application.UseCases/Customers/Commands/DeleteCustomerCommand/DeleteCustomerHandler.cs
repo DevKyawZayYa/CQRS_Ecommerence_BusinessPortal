@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessPortal.Application.Interface.Persistence;
 using BusinessPortal.Application.UseCases.Commons.Bases;
+using BusinessPortal.Domain.Entities;
 using MediatR;
 
 namespace BusinessPortal.Application.UseCases.Customers.Commands.DeleteCustomerCommand
@@ -20,7 +21,7 @@ namespace BusinessPortal.Application.UseCases.Customers.Commands.DeleteCustomerC
             var response = new BaseResponse<bool>();
             try
             {
-                response.Data = await _unitOfWork.Customers.DeleteAsync(command.CustomerId);
+                response.Data = await _unitOfWork.GetWriteRepository<Customer>().DeleteAsync(command.CustomerId);
                 if (response.Data)
                 {
                     response.succcess = true;

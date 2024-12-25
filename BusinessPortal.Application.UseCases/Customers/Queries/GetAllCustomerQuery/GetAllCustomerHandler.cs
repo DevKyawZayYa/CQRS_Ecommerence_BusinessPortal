@@ -2,6 +2,7 @@
 using BusinessPortal.Application.Dto;
 using BusinessPortal.Application.Interface.Persistence;
 using BusinessPortal.Application.UseCases.Commons.Bases;
+using BusinessPortal.Domain.Entities;
 using MediatR;
 
 namespace BusinessPortal.Application.UseCases.Customers.Queries.GetAllCustomerQuery
@@ -23,7 +24,7 @@ namespace BusinessPortal.Application.UseCases.Customers.Queries.GetAllCustomerQu
 
             try
             {
-                var customers = await _unitOfWork.Customers.GetAllAsync();
+                var customers = await _unitOfWork.GetReadRepository<Customer>().GetAllAsync();
 
                 if(customers is not null)
                 {

@@ -11,11 +11,7 @@ namespace BusinessPortal.Application.UseCases.Customers.Queries.GetByIdCustomerQ
     {
         public GetByIdCustomerValidator()
         {
-            RuleFor(x => x.CustomerId)
-                .NotEmpty()
-                .NotNull()
-                .MinimumLength(5)
-                .MaximumLength(5);
+            
         }
     }
 }

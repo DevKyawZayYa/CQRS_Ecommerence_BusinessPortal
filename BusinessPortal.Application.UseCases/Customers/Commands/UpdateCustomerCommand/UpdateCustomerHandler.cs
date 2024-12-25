@@ -23,7 +23,7 @@ namespace BusinessPortal.Application.UseCases.Customers.Commands.UpdateCustomerC
             try
             {
                 var customer = _mapper.Map<Customer>(command);
-                response.Data = await _unitOfWork.Customers.UpdateAsync(customer);
+                response.Data = await _unitOfWork.GetWriteRepository<Customer>().UpdateAsync(customer);
                 if (response.Data)
                 {
                     response.succcess = true;

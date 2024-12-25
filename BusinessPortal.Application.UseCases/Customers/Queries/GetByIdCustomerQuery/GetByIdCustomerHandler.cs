@@ -2,6 +2,7 @@
 using BusinessPortal.Application.Dto;
 using BusinessPortal.Application.Interface.Persistence;
 using BusinessPortal.Application.UseCases.Commons.Bases;
+using BusinessPortal.Domain.Entities;
 using MediatR;
 
 namespace BusinessPortal.Application.UseCases.Customers.Queries.GetByIdCustomerQuery
@@ -23,7 +24,7 @@ namespace BusinessPortal.Application.UseCases.Customers.Queries.GetByIdCustomerQ
             var response = new BaseResponse<CustomerDto>();
             try
             {
-                var customer = await _unitOfWork.Customers.GetAsync(request.CustomerId);
+                var customer = await _unitOfWork.GetReadRepository<Customer>().GetAsync(request.CustomerId);
                 if (customer is not null)
                 {
                     response.Data = _mapper.Map<CustomerDto>(customer);

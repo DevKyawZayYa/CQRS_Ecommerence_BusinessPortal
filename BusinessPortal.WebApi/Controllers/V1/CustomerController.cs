@@ -34,7 +34,7 @@ namespace BusinessPortal.WebApi.Controllers.V1
         }
 
         [HttpGet("Get")]
-        public async Task<IActionResult> GetAsync([FromQuery] string customerId)
+        public async Task<IActionResult> GetAsync([FromQuery] Guid customerId)
         {
             var response = await _mediator.Send(new GetByIdCustomerQuery() { CustomerId = customerId });
             if (response.succcess)

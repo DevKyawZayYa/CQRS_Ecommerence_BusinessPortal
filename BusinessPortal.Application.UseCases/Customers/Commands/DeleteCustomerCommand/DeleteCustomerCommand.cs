@@ -5,7 +5,7 @@ namespace BusinessPortal.Application.UseCases.Customers.Commands.DeleteCustomerC
 {
     public class DeleteCustomerCommand : IRequest<BaseResponse<bool>>
     {
-        public string CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
 
     }
 }

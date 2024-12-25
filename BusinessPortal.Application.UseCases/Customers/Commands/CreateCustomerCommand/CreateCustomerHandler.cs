@@ -22,12 +22,12 @@ namespace BusinessPortal.Application.UseCases.Customers.Commands.CreateCustomerC
             try
             {
                 var customer = _mapper.Map<Customer>(command);
-                response.Data = await _unitOfWork.Customers.InsertAsync(customer);
-                if (response.Data)
-                {
-                    response.succcess = true;
-                    response.Message = "Create succeed!";
-                }
+                await _unitOfWork.GetWriteRepository<Customer>().InsertAsync(customer);
+                await _unitOfWork.CompleteAsync();
+
+                response.Data = true;
+                response.succcess = true;
+                response.Message = "Create succeed!";
             }
             catch (Exception ex)
             {

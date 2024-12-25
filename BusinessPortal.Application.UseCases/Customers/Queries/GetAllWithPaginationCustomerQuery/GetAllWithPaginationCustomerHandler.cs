@@ -2,6 +2,7 @@
 using BusinessPortal.Application.Dto;
 using BusinessPortal.Application.Interface.Persistence;
 using BusinessPortal.Application.UseCases.Commons.Bases;
+using BusinessPortal.Domain.Entities;
 using MediatR;
 
 namespace BusinessPortal.Application.UseCases.Customers.Queries.GetAllWithPaginationCustomerQuery
@@ -21,9 +22,9 @@ namespace BusinessPortal.Application.UseCases.Customers.Queries.GetAllWithPagina
             var response = new BaseResponsePagination<IEnumerable<CustomerDto>>();
             try
             {
-                var count = await _unitOfWork.Customers.CountAsync();
+                var count = await _unitOfWork.GetReadRepository<Customer>().CountAsync();
 
-                var customers = await _unitOfWork.Customers.GetAllWithPaginationAsync(request.PageNumber, request.PageSize);
+                var customers = await _unitOfWork.GetReadRepository<Customer>().GetAllWithPaginationAsync(request.PageNumber, request.PageSize);
 
                 if (customers is not null)
                 {

@@ -8,7 +8,9 @@ namespace BusinessPortal.Application.Interface.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {
-        IUserRepository Users { get; }
-        ICustomerRepository Customers { get; }
+        IGenericReadRepository<T> GetReadRepository<T>() where T : class;
+        IGenericWriteRepository<T> GetWriteRepository<T>() where T : class;
+        Task<int> CompleteAsync();
     }
+
 }
