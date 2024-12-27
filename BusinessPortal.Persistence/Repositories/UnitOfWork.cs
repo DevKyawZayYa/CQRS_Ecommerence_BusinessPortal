@@ -1,53 +1,62 @@
 ﻿using BusinessPortal.Application.Interface.Persistence;
 using BusinessPortal.Persistence.Contexts;
+using BusinessPortal.Persistence.Repositories;
+using Dapper;
+using System.Data;
 
-namespace BusinessPortal.Persistence.Repositories
+public class UnitOfWork : IUnitOfWork, IDisposable
 {
-    public class UnitOfWork : IUnitOfWork
+    private readonly DapperContext _context;
+    private IDbTransaction? _transaction;
+    private IDbConnection? _connection;
+
+    public UnitOfWork(DapperContext context)
     {
-        private readonly DapperContext _context;
-        private readonly Dictionary<Type, object> _readRepositories = new();
-        private readonly Dictionary<Type, object> _writeRepositories = new();
+        _context = context;
+        _connection = _context.CreateConnection();
+        _connection.Open();
+        _transaction = _connection.BeginTransaction();
+    }
 
-        public UnitOfWork(DapperContext context)
+    public IGenericWriteRepository<T> GetWriteRepository<T>() where T : class
+    {
+        return new GenericWriteRepository<T>(_context);
+    }
+
+    public IGenericReadRepository<T> GetReadRepository<T>() where T : class
+    {
+        return new GenericReadRepository<T>(_context);
+    }
+
+    public async Task<int> CompleteAsync()
+    {
+        if (_transaction == null)
         {
-            _context = context;
+            throw new InvalidOperationException("Transaction has not been initialized.");
         }
 
-        public IGenericReadRepository<T> GetReadRepository<T>() where T : class
+        try
         {
-            if (_readRepositories.TryGetValue(typeof(T), out var repository))
-            {
-                return (IGenericReadRepository<T>)repository;
-            }
-
-            var newRepository = new GenericReadRepository<T>(_context);
-            _readRepositories[typeof(T)] = newRepository;
-            return newRepository;
+            var result = await _transaction.Connection!.ExecuteAsync("COMMIT");
+            return result;
         }
-
-        public IGenericWriteRepository<T> GetWriteRepository<T>() where T : class
+        catch
         {
-            if (_writeRepositories.TryGetValue(typeof(T), out var repository))
-            {
-                return (IGenericWriteRepository<T>)repository;
-            }
-
-            var newRepository = new GenericWriteRepository<T>(_context);
-            _writeRepositories[typeof(T)] = newRepository;
-            return newRepository;
+            await _transaction.Connection!.ExecuteAsync("ROLLBACK");
+            throw;
         }
-
-        public async Task<int> CompleteAsync()
+        finally
         {
-            // Implement transaction management if needed
-            return await Task.FromResult(0);
-        }
-
-        public void Dispose()
-        {
-            // Dispose resources if needed
+            _transaction?.Dispose();
+            _connection?.Close();
+            _transaction = null;
+            _connection = null;
         }
     }
 
+    public void Dispose()
+    {
+        _transaction?.Dispose();
+        _connection?.Dispose();
+    }
 }

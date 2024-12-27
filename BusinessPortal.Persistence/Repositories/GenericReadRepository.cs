@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,10 +37,10 @@ namespace BusinessPortal.Persistence.Repositories
         public async Task<IEnumerable<T>> GetAllWithPaginationAsync(int pageNumber, int pageSize)
         {
             using var connection = _context.CreateConnection();
-            var query = $"CALL {typeof(T).Name}s_GetAllWithPagination(@PageSize, @Offset)";
+            var query = $"CALL {typeof(T).Name}s_GetAllWithPagination(@PageNumber, @PageSize)";
             var parameters = new DynamicParameters();
+            parameters.Add("PageNumber", pageNumber);
             parameters.Add("PageSize", pageSize);
-            parameters.Add("Offset", (pageNumber - 1) * pageSize);
             return await connection.QueryAsync<T>(query, param: parameters, commandType: CommandType.Text);
         }
 
@@ -51,5 +52,29 @@ namespace BusinessPortal.Persistence.Repositories
             parameters.Add("Id", id);
             return await connection.QuerySingleOrDefaultAsync<T>(query, param: parameters, commandType: CommandType.Text);
         }
+
+
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            using var connection = _context.CreateConnection();
+
+            // Convert the predicate to a SQL WHERE clause and parameters
+            var queryBuilder = new StringBuilder($"SELECT * FROM {typeof(T).Name} WHERE ");
+            var parameters = new DynamicParameters();
+
+            var body = (BinaryExpression)predicate.Body;
+            var left = (MemberExpression)body.Left;
+            var right = (ConstantExpression)body.Right;
+
+            queryBuilder.Append($"{left.Member.Name} = @{left.Member.Name}");
+            parameters.Add($"@{left.Member.Name}", right.Value);
+
+            queryBuilder.Append(" LIMIT 1");
+
+            var query = queryBuilder.ToString();
+
+            return await connection.QueryFirstOrDefaultAsync<T>(query, parameters);
+        }
+
     }
 }

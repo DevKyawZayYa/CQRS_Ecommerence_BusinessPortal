@@ -1,6 +1,9 @@
-﻿namespace BusinessPortal.Domain.Entities
+﻿using BusinessPortal.Application.UseCases.Commons.Bases;
+using MediatR;
+
+namespace BusinessPortal.Application.UseCases.Users.Commands.CreateUserCommand
 {
-    public class User
+    public class CreateUserCommand : IRequest<BaseResponse<bool>>
     {
         public Guid UserId { get; set; }
         public string? FirstName { get; set; }

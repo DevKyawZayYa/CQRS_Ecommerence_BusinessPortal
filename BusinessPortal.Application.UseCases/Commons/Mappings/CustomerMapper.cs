@@ -1,43 +1,44 @@
 ﻿using AutoMapper;
 using BusinessPortal.Application.Dto;
-using BusinessPortal.Application.UseCases.Customers.Commands.CreateCustomerCommand;
-using BusinessPortal.Application.UseCases.Customers.Commands.UpdateCustomerCommand;
+using BusinessPortal.Application.UseCases.Users.Commands.CreateUserCommand;
+using BusinessPortal.Application.UseCases.Users.Commands.UpdateUserCommand;
 using BusinessPortal.Domain.Entities;
 
 namespace BusinessPortal.Application.UseCases.Commons.Mappings
 {
-    public class CustomerMapper : Profile
+    public class UserMapper : Profile
     {
-        public CustomerMapper()
+        public UserMapper()
         {
-            // Map Customer to CustomerDto and vice versa
-            CreateMap<Customer, CustomerDto>().ReverseMap();
+            // Map User to UserDto and vice versa
+            CreateMap<User, UserDto>().ReverseMap();
 
-            // Explicit mapping for CreateCustomerCommand to Customer
-            CreateMap<CreateCustomerCommand, Customer>()
-                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => Guid.NewGuid())) // Generate new Guid for CustomerId
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName)) // Map ContactName to FullName
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email)) // Map ContactTitle to Email (adjust as needed)
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
-                .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Region))
-                .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.PostalCode))
-                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => "Customer")) // Default Role to "Customer"
+            // Explicit mapping for CreateUserCommand to User
+            CreateMap<CreateUserCommand, User>()
+               // .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => Guid.NewGuid())) 
+               // .ForMember<string>(dest => dest.FirstName!, opt => opt.MapFrom<string>(src => src.FullName!)) 
+               // .ForMember<string>(dest => dest.Email!, opt => opt.MapFrom<string>(src => src.Email!)) 
+               //// .ForMember(dest => dest.MobileNumber, (IMemberConfigurationExpression<CreateUserCommand, User, User.Phone> opt) => opt.MapFrom<string>(src => src.Phone))
+               // .ForMember<string>(dest => dest.Address!, opt => opt.MapFrom<string>(src => src.Address!))
+               // .ForMember<string>(dest => dest.City!, opt => opt.MapFrom<string>(src => src.City!))
+               // .ForMember<string>(dest => dest.Region!, opt => opt.MapFrom<string>(src => src.Region!))
+               // .ForMember<string>(dest => dest.PostalCode!, opt => opt.MapFrom<string>(src => src.PostalCode!))
+               // .ForMember<string>(dest => dest.Country!, opt => opt.MapFrom<string>(src => src.Country!))
+               // .ForMember<string>(dest => dest.Role!, opt => opt.MapFrom(src => "User")) // Default Role to "User"
+               // .ForMember<string>(dest => dest.IsActive!, opt => opt.MapFrom(src => "User"))
                 ;
-            // Explicit mapping for UpdateCustomerCommand to Customer
-            CreateMap<UpdateCustomerCommand, Customer>()
-                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.CustomerId)) // Ensure CustomerId is mapped
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
-                .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Region))
-                .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.PostalCode))
-                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role ?? "Customer")) // Use Role or default to "Customer"
+            // Explicit mapping for UpdateUserCommand to User
+            CreateMap<UpdateUserCommand, User>()
+                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember<string>(dest => dest.FirstName!, opt => opt.MapFrom<string>(src => src.FullName!))
+                .ForMember<string>(dest => dest.Email!, opt => opt.MapFrom<string>(src => src.Email!))
+                // .ForMember(dest => dest.MobileNumber, (IMemberConfigurationExpression<CreateUserCommand, User, User.Phone> opt) => opt.MapFrom<string>(src => src.Phone))
+                .ForMember<string>(dest => dest.Address!, opt => opt.MapFrom<string>(src => src.Address!))
+                .ForMember<string>(dest => dest.City!, opt => opt.MapFrom<string>(src => src.City!))
+                .ForMember<string>(dest => dest.Region!, opt => opt.MapFrom<string>(src => src.Region!))
+                .ForMember<string>(dest => dest.PostalCode!, opt => opt.MapFrom<string>(src => src.PostalCode!))
+                .ForMember<string>(dest => dest.Country!, opt => opt.MapFrom<string>(src => src.Country!))
+                .ForMember<string>(dest => dest.Role!, opt => opt.MapFrom(src => "User")) // Default Role to "User"
                 ;
         }
     }

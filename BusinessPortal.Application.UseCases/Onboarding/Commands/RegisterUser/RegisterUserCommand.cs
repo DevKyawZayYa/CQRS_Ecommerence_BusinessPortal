@@ -1,8 +1,11 @@
-﻿namespace BusinessPortal.Domain.Entities
+﻿using MediatR;
+using BusinessPortal.Application.UseCases.Commons.Bases;
+using BusinessPortal.Application.Dto;
+
+namespace BusinessPortal.Application.UseCases.Users.Commands.RegisterUser
 {
-    public class User
+    public class RegisterUserCommand : IRequest<BaseResponse<UserDto>>
     {
-        public Guid UserId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
@@ -14,9 +17,5 @@
         public string? Region { get; set; }
         public string? PostalCode { get; set; }
         public string? Country { get; set; }
-        public string? Role { get; set; }
-        public bool? IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime? LastLoginDate { get; set; }
     }
 }

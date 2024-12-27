@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,5 +13,7 @@ namespace BusinessPortal.Application.Interface.Persistence
         Task<IEnumerable<T>> GetAllAsync();
         Task<int> CountAsync();
         Task<IEnumerable<T>> GetAllWithPaginationAsync(int pageNumber, int pageSize);
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate); 
+
     }
 }
