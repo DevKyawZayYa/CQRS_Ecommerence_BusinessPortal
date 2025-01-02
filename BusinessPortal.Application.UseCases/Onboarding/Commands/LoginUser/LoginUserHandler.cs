@@ -28,7 +28,7 @@ namespace BusinessPortal.Application.UseCases.Users.Commands.LoginUser
             try
             {
                 var user = await _unitOfWork.GetReadRepository<User>()
-                    .FirstOrDefaultAsync(u => u.Email == "john.doe@example.com");
+                    .FirstOrDefaultAsync(u => u.Email == request.Email);
 
                 if (user != null && BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 {

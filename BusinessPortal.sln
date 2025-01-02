@@ -25,12 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessPortal.Persistence"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessPortal.WebApi", "BusinessPortal.WebApi\BusinessPortal.WebApi.csproj", "{DD73DBC9-E560-451D-8CE9-F2796B38AA7A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{60028516-F41C-49D6-968A-10C2E668D258}"
-	ProjectSection(SolutionItems) = preProject
-		AuthConfiguration.cs = AuthConfiguration.cs
-		PaymentGatewayConfiguration.cs = PaymentGatewayConfiguration.cs
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +71,5 @@ Global
 		{4301CC5C-DBA7-4F8A-B70D-4441F1553619} = {A90524A7-5AFD-4429-A5B4-A8C6D3FA9D80}
 		{60860749-2CC2-44BA-9455-92119990BB16} = {A90524A7-5AFD-4429-A5B4-A8C6D3FA9D80}
 		{DD73DBC9-E560-451D-8CE9-F2796B38AA7A} = {A95C78C4-97B6-407E-9D54-3C790A8C0CE9}
-		{60028516-F41C-49D6-968A-10C2E668D258} = {4EFBC074-0550-435A-A889-6BDC547FC356}
 	EndGlobalSection
 EndGlobal

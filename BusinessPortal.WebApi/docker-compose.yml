@@ -1,0 +1,29 @@
+﻿version: '3.8'
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: BusinessPortal/Dockerfile
+    ports:
+      - "8080:80"
+      - "8081:81"
+    environment:
+      # Environment variable for ASP.NET Core
+      - ASPNETCORE_ENVIRONMENT=Production
+      
+      # Connection string for your application
+      - ConnectionStrings__NorthwindConnection=Server=mywebapi-db.c1gism2kitk0.ap-southeast-1.rds.amazonaws.com;Database=ecommerencedb;User=admin;Password=Kzy09970425320;
+
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin1234
+      MYSQL_DATABASE: ecommerencedb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Kzy09970425320

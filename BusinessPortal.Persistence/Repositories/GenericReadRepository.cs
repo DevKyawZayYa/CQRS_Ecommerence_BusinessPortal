@@ -64,7 +64,16 @@ namespace BusinessPortal.Persistence.Repositories
 
             var body = (BinaryExpression)predicate.Body;
             var left = (MemberExpression)body.Left;
-            var right = (ConstantExpression)body.Right;
+            var right = body.Right as ConstantExpression;
+
+            if (right == null)
+            {
+                var member = body.Right as MemberExpression;
+                if (member != null)
+                {
+                    right = Expression.Constant(Expression.Lambda<Func<object>>(Expression.Convert(member, typeof(object))).Compile()());
+                }
+            }
 
             queryBuilder.Append($"{left.Member.Name} = @{left.Member.Name}");
             parameters.Add($"@{left.Member.Name}", right.Value);
@@ -75,6 +84,7 @@ namespace BusinessPortal.Persistence.Repositories
 
             return await connection.QueryFirstOrDefaultAsync<T>(query, parameters);
         }
+
 
     }
 }
